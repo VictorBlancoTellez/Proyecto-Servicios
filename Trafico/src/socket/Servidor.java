@@ -1,55 +1,57 @@
 package socket;
 
-import java.io.*;
 import java.net.*;
+//importar la libreria java.net
+
+import java.io.*;
+//importar la libreria java.io
+
+//declaramos la clase servidortcp
 
 public class Servidor {
-	private static int PUERTO = 2017;
 
-	public static void main(String args[]) {
+//método principal main de la clase
+	public static void main(String argv[]) {
 
-		BufferedReader entrada;
-		DataOutputStream salida;
-		Socket socket;
-		ServerSocket serverSocket;
+//declaramos un objeto ServerSocket para realizar la comunicación
+		ServerSocket socket;
+//creamos una varible boolean con el valor a false
+		boolean fin = false;
 
+//Declaramos un bloque try y catch para controlar la ejecución del subprograma
 		try {
-			serverSocket = new ServerSocket(PUERTO);
 
-			System.out.println("Esperando una conexión...");
+//Instanciamos un ServerSocket con la dirección del destino y el
+//puerto que vamos a utilizar para la comunicación
 
-			socket = serverSocket.accept();
+			socket = new ServerSocket(6000);
 
-			System.out.println("Un cliente se ha conectado...");
+//Creamos un socket_cli al que le pasamos el contenido del objeto socket después
+//de ejecutar la función accept que nos permitirá aceptar conexiones de clientes
+			Socket socket_cli = socket.accept();
 
-			// Para los canales de entrada y salida de datos
+//Declaramos e instanciamos el objeto DataInputStream
+//que nos valdrá para recibir datos del cliente
 
-			entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			DataInputStream in = new DataInputStream(socket_cli.getInputStream());
 
-			salida = new DataOutputStream(socket.getOutputStream());
+//Creamos un bucle do while en el que recogemos el mensaje
+//que nos ha enviado el cliente y después lo mostramos
+//por consola
 
-			System.out.println("Confirmando conexion al cliente....");
-
-			salida.writeUTF("Conexión exitosa...");
-
-			// Para recibir el mensaje
-
-			String mensajeRecibido = entrada.readLine();
-
-			System.out.println(mensajeRecibido);
-
-			salida.writeUTF("Se recibio tu mensaje.");
-
-			salida.writeUTF("Gracias por conectarte.");
-
-			System.out.println("Cerrando conexión...");
-
-			// Cerrando la conexón
-			serverSocket.close();
-
-		} catch (IOException e) {
-			System.out.println("Error de entrada/salida." + e.getMessage());
+			do {
+				String mensaje = "";
+				mensaje = in.readUTF();
+				System.out.println(mensaje);
+			} while (1 > 0);
 		}
+//utilizamos el catch para capturar los errores que puedan surgir
+		catch (Exception e) {
 
+//si existen errores los mostrará en la consola y después saldrá del
+//programa
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
 	}
 }
