@@ -1,57 +1,45 @@
 package socket;
 
-import java.net.*;
-//importar la libreria java.net
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-import java.io.*;
-//importar la libreria java.io
+public class Servidor extends Conexion // Se hereda de conexión para hacer uso de los sockets y demás
+{
+	public Servidor() throws IOException {
+		super("servidor");
+	} // Se usa el constructor para servidor de Conexion
 
-//declaramos la clase servidortcp
-
-public class Servidor {
-
-//método principal main de la clase
-	public static void main(String argv[]) {
-
-//declaramos un objeto ServerSocket para realizar la comunicación
-		ServerSocket socket;
-//creamos una varible boolean con el valor a false
-		boolean fin = false;
-
-//Declaramos un bloque try y catch para controlar la ejecución del subprograma
+	public void startServer()// Método para iniciar el servidor
+	{
 		try {
+			System.out.println("Esperando..."); // Esperando conexión
 
-//Instanciamos un ServerSocket con la dirección del destino y el
-//puerto que vamos a utilizar para la comunicación
+			cs = ss.accept(); // Accept comienza el socket y espera una conexión desde un cliente
 
-			socket = new ServerSocket(6000);
+			System.out.println("Cliente en línea");
 
-//Creamos un socket_cli al que le pasamos el contenido del objeto socket después
-//de ejecutar la función accept que nos permitirá aceptar conexiones de clientes
-			Socket socket_cli = socket.accept();
+			// Se obtiene el flujo de salida del cliente para enviarle mensajes
+			salidaCliente = new DataOutputStream(cs.getOutputStream());
 
-//Declaramos e instanciamos el objeto DataInputStream
-//que nos valdrá para recibir datos del cliente
+			// Se le envía un mensaje al cliente usando su flujo de salida
+			salidaCliente.writeUTF("Petición recibida y aceptada");
 
-			DataInputStream in = new DataInputStream(socket_cli.getInputStream());
+			// Se obtiene el flujo entrante desde el cliente
+			BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 
-//Creamos un bucle do while en el que recogemos el mensaje
-//que nos ha enviado el cliente y después lo mostramos
-//por consola
+			while ((mensajeServidor = entrada.readLine()) != null) // Mientras haya mensajes desde el cliente
+			{
+				// Se muestra por pantalla el mensaje recibido
+				System.out.println(mensajeServidor);
+			}
 
-			do {
-				String mensaje = "";
-				mensaje = in.readUTF();
-				System.out.println(mensaje);
-			} while (1 > 0);
-		}
-//utilizamos el catch para capturar los errores que puedan surgir
-		catch (Exception e) {
+			System.out.println("Fin de la conexión");
 
-//si existen errores los mostrará en la consola y después saldrá del
-//programa
-			System.err.println(e.getMessage());
-			System.exit(1);
+			ss.close();// Se finaliza la conexión con el cliente
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

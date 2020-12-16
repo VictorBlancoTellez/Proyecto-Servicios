@@ -1,59 +1,29 @@
 package socket;
 
-import java.net.*;
-//importar la libreria java.net
-import java.io.*;
-//importar la libreria java.io
+import java.io.DataOutputStream;
+import java.io.IOException;
 
-//declararamos la clase clientetcp
-public class Cliente {
+public class Cliente extends Conexion {
+	public Cliente() throws IOException {
+		super("cliente");
+	} // Se usa el constructor para cliente de Conexion
 
-//método principal de la clase
-	public static void main(String argv[]) {
-
-//Creamos una instancia BuffererReader en la
-//que guardamos los datos introducido por el usuario
-
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-//declaramos un objeto socket para realizar la comunicación
-		Socket socket;
-
-//declaramos e instanciamos un objeto de tipo byte
-		byte[] mensaje_bytes = new byte[256];
-
-//declaramos una variable de tipo string
-		String mensaje = "";
-
-//Declaramos un bloque try y catch para controlar la ejecución del subprograma
+	public void startClient() // Método para iniciar el cliente
+	{
 		try {
+			// Flujo de datos hacia el servidor
+			salidaServidor = new DataOutputStream(cs.getOutputStream());
 
-//Instanciamos un socket con la dirección del destino y el
-//puerto que vamos a utilizar para la comunicación
-			socket = new Socket("127.0.0.1", 6000);
+			// Se enviarán dos mensajes
+			for (int i = 0; i < 2; i++) {
+				// Se escribe en el servidor usando su flujo de datos
+				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
+			}
 
-//Declaramos e instanciamos el objeto DataOutputStream
-//que nos valdrá para enviar datos al servidor destino
-			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			cs.close();// Fin de la conexión
 
-//Creamos un bucle do while en el que enviamos al servidor el mensaje
-//los datos que hemos obtenido despues de ejecutar la función
-//"readLine" en la instancia "in"
-
-			do {
-				mensaje = in.readLine();
-//enviamos el mensaje codificado en UTF
-				out.writeUTF(mensaje);
-//mientras el mensaje no encuentre la cadena fin, seguiremos ejecutando
-//el bucle do-while
-			} while (!mensaje.startsWith("fin"));
-		}
-//utilizamos el catch para capturar los errores que puedan surgir
-		catch (Exception e) {
-//si existen errores los mostrará en la consola y después saldrá del
-//programa
-			System.err.println(e.getMessage());
-			System.exit(1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

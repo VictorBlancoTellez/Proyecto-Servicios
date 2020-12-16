@@ -15,14 +15,14 @@ public class Main {
 			Servidor serv = new Servidor();
 
 			System.out.println("Iniciando servidor\n");
-//			serv.startServer();
+			serv.startServer();
 		}
 		// Si te logeas como cliente haces esto
 		else {
 			Cliente cli = new Cliente();
 
 			System.out.println("Iniciando cliente\n");
-//			cli.startClient();
+			cli.startClient();
 		}
 
 	}
