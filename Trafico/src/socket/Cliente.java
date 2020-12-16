@@ -22,10 +22,12 @@ public class Cliente extends Conexion {
 				// Se escribe en el servidor usando su flujo de datos
 				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
 			}
-			while ((mensajeServidor = entrada.readLine()) != null) // Mientras haya mensajes desde el cliente
+			System.out.println("ANTES DE ENTRAR AL SITIO ESTE RARO");
+			while ((mensajeCliente = entrada.readLine()) != null) // Mientras haya mensajes desde el cliente
 			{
+				System.out.println("ENTRO EN EL SITIO ESTE RARO");
 				// Se muestra por pantalla el mensaje recibido
-				System.out.println(mensajeServidor);
+				System.out.println(mensajeCliente);
 			}
 			cs.close();// Fin de la conexión
 
