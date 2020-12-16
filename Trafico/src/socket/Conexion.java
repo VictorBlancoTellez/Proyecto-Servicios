@@ -20,5 +20,5 @@ public class Conexion {
 		} else {
 			socket = new Socket(HOST, PUERTO);
 		}
-	}
+	}//COMENTARIO DE PRUEBA
 }
