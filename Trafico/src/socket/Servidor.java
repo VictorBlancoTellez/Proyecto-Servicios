@@ -19,7 +19,7 @@ public class Servidor extends Conexion {
 
 				System.out.println("Cliente en línea");
 
-				salidaCliente = new DataOutputStream(socket.getOutputStream());
+//				salidaCliente = new DataOutputStream(socket.getOutputStream());
 
 				salidaCliente.writeUTF("Petición recibida y aceptada");
 
