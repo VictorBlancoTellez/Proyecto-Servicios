@@ -1,7 +1,9 @@
 package socket;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Cliente extends Conexion {
 	public Cliente() throws IOException {
@@ -14,12 +16,17 @@ public class Cliente extends Conexion {
 			// Flujo de datos hacia el servidor
 			salidaServidor = new DataOutputStream(cs.getOutputStream());
 
+			BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 			// Se enviarán dos mensajes
 			for (int i = 0; i < 2; i++) {
 				// Se escribe en el servidor usando su flujo de datos
 				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
 			}
-
+			while ((mensajeServidor = entrada.readLine()) != null) // Mientras haya mensajes desde el cliente
+			{
+				// Se muestra por pantalla el mensaje recibido
+				System.out.println(mensajeServidor);
+			}
 			cs.close();// Fin de la conexión
 
 		} catch (Exception e) {
