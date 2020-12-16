@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Conexion {
 	private final int PUERTO = 1234;
-	private final String HOST = "25.29.249.10";
+	protected final String HOST = "25.29.249.10";
 	protected String mensajeServidor;
 	protected ServerSocket serverSocket;
 	protected Socket socket;

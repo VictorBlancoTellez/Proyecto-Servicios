@@ -2,26 +2,35 @@ package socket;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
-public class Cliente extends Conexion {
-	public Cliente() throws IOException {
-		super("cliente");
-	}
+public class Cliente {
 
-	public void startClient() {
+	private static String HOST = "localhost";
+	private static int PUERTO = 2017;
+
+	public void startClient() throws IOException {
+		Socket socket;
+		DataOutputStream mensaje;
+
 		try {
+			// Creamos nuestro socket
+			socket = new Socket(HOST, PUERTO);
 
-			salidaServidor = new DataOutputStream(socket.getOutputStream());
+			mensaje = new DataOutputStream(socket.getOutputStream());
 
-			for (int i = 0; i < 2; i++) {
-				System.out.println("Este es el mensaje numnero" + i + 1 + "\n");
-				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
-			}
+			// Enviamos un mensaje
+			mensaje.writeUTF("Hola soy un cliente!!");
 
+			// Cerramos la conexión
 			socket.close();
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (UnknownHostException e) {
+			System.out.println("El host no existe o no está activo.");
+		} catch (IOException e) {
+			System.out.println("Error de entrada/salida.");
 		}
+
 	}
 }
