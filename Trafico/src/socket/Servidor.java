@@ -19,17 +19,17 @@ public class Servidor extends Conexion {
 
 				System.out.println("Cliente en línea");
 
-//				salidaCliente = new DataOutputStream(socket.getOutputStream());
+				salidaCliente = new DataOutputStream(socket.getOutputStream());
 
 				salidaCliente.writeUTF("Petición recibida y aceptada");
 
-//				BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//				System.out.println(entrada.readLine());
+				BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				System.out.println(entrada.readLine());
 
-//				while ((mensajeServidor = entrada.readLine()) != null) {
-//
-//					System.out.println(mensajeServidor);
-//				}
+				while ((mensajeServidor = entrada.readLine()) != null) {
+
+					System.out.println(mensajeServidor);
+				}
 
 				System.out.println("Fin de la conexión");
 
