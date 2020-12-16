@@ -11,10 +11,10 @@ public class Cliente extends Conexion {
 	public void startClient() {
 		try {
 
-			salidaServidor = new DataOutputStream(socket.getOutputStream());
+//			salidaServidor = new DataOutputStream(socket.getOutputStream());
 
 			for (int i = 0; i < 2; i++) {
-
+				System.out.println("Este es el mensaje numnero" + i + 1 + "\n");
 				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
 			}
 
