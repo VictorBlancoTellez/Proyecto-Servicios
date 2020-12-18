@@ -1,43 +1,113 @@
 package socket;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.*;
+import java.io.*;
+import java.util.Scanner;
 
-public class Cliente extends Conexion {
-	public Cliente(String tipo) throws IOException {
-		super(tipo);
-		// TODO Auto-generated constructor stub
+public class Cliente {
+	private Socket socket;
+	private DataInputStream bufferDeEntrada = null;
+	private DataOutputStream bufferDeSalida = null;
+	Scanner teclado = new Scanner(System.in);
+	final String COMANDO_TERMINACION = "salir()";
+
+	public void levantarConexion(String ip, int puerto) {
+		try {
+			socket = new Socket(ip, puerto);
+			mostrarTexto("Conectado a :" + socket.getInetAddress().getHostName());
+		} catch (Exception e) {
+			mostrarTexto("Excepción al levantar conexión: " + e.getMessage());
+			System.exit(0);
+		}
 	}
 
-	public Cliente() throws IOException {
-		super("cliente");
-	} // Se usa el constructor para cliente de Conexion
+	public static void mostrarTexto(String s) {
+		System.out.println(s);
+	}
 
-	public void startClient() // Método para iniciar el cliente
-	{
+	public void abrirFlujos() {
 		try {
-			// Flujo de datos hacia el servidor
-			salidaServidor = new DataOutputStream(cs.getOutputStream());
-
-			BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-			// Se enviarán dos mensajes
-			for (int i = 0; i < 2; i++) {
-				// Se escribe en el servidor usando su flujo de datos
-				salidaServidor.writeUTF("Este es el mensaje número " + (i + 1) + "\n");
-			}
-			System.out.println("ANTES DE ENTRAR AL SITIO ESTE RARO");
-			while ((mensajeCliente = entrada.readLine()) != null) // Mientras haya mensajes desde el cliente
-			{
-				System.out.println("ENTRO EN EL SITIO ESTE RARO");
-				// Se muestra por pantalla el mensaje recibido
-				System.out.println(mensajeCliente);
-			}
-			cs.close();// Fin de la conexión
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			bufferDeEntrada = new DataInputStream(socket.getInputStream());
+			bufferDeSalida = new DataOutputStream(socket.getOutputStream());
+			bufferDeSalida.flush();
+		} catch (IOException e) {
+			mostrarTexto("Error en la apertura de flujos");
 		}
+	}
+
+	public void enviar(String s) {
+		try {
+			bufferDeSalida.writeUTF(s);
+			bufferDeSalida.flush();
+		} catch (IOException e) {
+			mostrarTexto("IOException on enviar");
+		}
+	}
+
+	public void cerrarConexion() {
+		try {
+			bufferDeEntrada.close();
+			bufferDeSalida.close();
+			socket.close();
+			mostrarTexto("Conexión terminada");
+		} catch (IOException e) {
+			mostrarTexto("IOException on cerrarConexion()");
+		} finally {
+			System.exit(0);
+		}
+	}
+
+	public void ejecutarConexion(String ip, int puerto) {
+		Thread hilo = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					levantarConexion(ip, puerto);
+					abrirFlujos();
+					recibirDatos();
+				} finally {
+					cerrarConexion();
+				}
+			}
+		});
+		hilo.start();
+	}
+
+	public void recibirDatos() {
+		String st = "";
+		try {
+			do {
+				st = (String) bufferDeEntrada.readUTF();
+				mostrarTexto("\n[Servidor] => " + st);
+				System.out.print("\n[Usted] => ");
+			} while (!st.equals(COMANDO_TERMINACION));
+		} catch (IOException e) {
+		}
+	}
+
+	public void escribirDatos() {
+		String entrada = "";
+		while (true) {
+			System.out.print("[Usted] => ");
+			entrada = teclado.nextLine();
+			if (entrada.length() > 0)
+				enviar(entrada);
+		}
+	}
+
+	public static void main(String[] argumentos) {
+		Cliente cliente = new Cliente();
+		Scanner escaner = new Scanner(System.in);
+		mostrarTexto("Ingresa la IP: [localhost por defecto] ");
+		String ip = escaner.nextLine();
+		if (ip.length() <= 0)
+			ip = "localhost";
+
+		mostrarTexto("Puerto: [5050 por defecto] ");
+		String puerto = escaner.nextLine();
+		if (puerto.length() <= 0)
+			puerto = "5050";
+		cliente.ejecutarConexion(ip, Integer.parseInt(puerto));
+		cliente.escribirDatos();
 	}
 }

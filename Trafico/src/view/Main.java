@@ -3,13 +3,15 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import socket.Cliente;
 import socket.Servidor;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 
 		boolean bServidor;
 		byte bOpcion;
@@ -22,19 +24,23 @@ public class Main {
 			bServidor = true;
 		}
 
-		// Si te logeas como servidore haces esto
+		// Si te logeas como servidore haces esto 	
+		List<String> jvmArgs = new ArrayList<>();
+		List<String> argsM = new ArrayList<>();
 		if (bServidor) {
 			Servidor serv = new Servidor();
 
 			System.out.println("Iniciando servidor\n");
-			serv.startServer();
+
+			Process p = JavaProcess.exec(Servidor.class, jvmArgs, argsM);
+
 		}
 		// Si te logeas como cliente haces esto
 		else {
 			Cliente cli = new Cliente();
 
 			System.out.println("Iniciando cliente\n");
-			cli.startClient();
+			Process p = JavaProcess.exec(Cliente.class, jvmArgs, argsM);
 		}
 
 	}
