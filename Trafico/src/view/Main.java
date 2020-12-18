@@ -8,7 +8,7 @@ import socket.Servidor;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		boolean bServidor = true;
+		boolean bServidor = false;
 
 		// Si te logeas como servidore haces esto
 		if (bServidor) {
