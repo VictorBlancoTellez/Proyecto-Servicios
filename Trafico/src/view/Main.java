@@ -1,6 +1,8 @@
 package view;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import socket.Cliente;
 import socket.Servidor;
@@ -8,7 +10,17 @@ import socket.Servidor;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		boolean bServidor = true;
+
+		boolean bServidor;
+		byte bOpcion;
+		BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Pulse 1 para cliente, 2 para servidor");
+		bOpcion = Byte.parseByte(leer.readLine());
+		if (bOpcion == 1) {
+			bServidor = false;
+		} else {
+			bServidor = true;
+		}
 
 		// Si te logeas como servidore haces esto
 		if (bServidor) {
