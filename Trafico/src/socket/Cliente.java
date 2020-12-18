@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Cliente extends Conexion {
+	public Cliente(String tipo) throws IOException {
+		super(tipo);
+		// TODO Auto-generated constructor stub
+	}
+
 	public Cliente() throws IOException {
 		super("cliente");
 	} // Se usa el constructor para cliente de Conexion
