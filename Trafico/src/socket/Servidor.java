@@ -15,8 +15,8 @@ public class Servidor {
 
 	public void levantarConexion(int puerto) {
 		try {
-			serverSocket = new ServerSocket(puerto);
 			mostrarTexto("Esperando conexión entrante en el puerto " + String.valueOf(puerto) + "...");
+			System.out.println("estoy antes del accept");
 			socket = serverSocket.accept();
 			mostrarTexto("Conexión establecida con: " + socket.getInetAddress().getHostName() + "\n\n\n");
 		} catch (Exception e) {
@@ -122,15 +122,19 @@ public class Servidor {
 		
 	}
 	
-	private void a() {
+	private void a() throws NumberFormatException, IOException {
 		Scanner sc = new Scanner(System.in);
 		mostrarTexto("Ingresa el puerto [5050 por defecto]: ");
 		String puerto = sc.nextLine();
 		if (puerto.length() <= 0)
 			puerto = "5050";
+		serverSocket = new ServerSocket(Integer.parseInt(puerto));
 		while (true) {
+			System.out.println("Estoy dentro de la funcions");
 			Thread a = new Thread(new Server(Integer.parseInt(puerto)));
 			a.start();
+			Thread b = new Thread(new Server(Integer.parseInt(puerto)));
+			b.start();
 			//s.ejecutarConexion(Integer.parseInt(puerto));
 			this.escribirDatos();
 		}
