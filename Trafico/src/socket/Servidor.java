@@ -13,7 +13,6 @@ public class Servidor {
 	Scanner escaner = new Scanner(System.in);
 	final String COMANDO_TERMINACION = "salir()";
 
-//comentario que no hace nada
 	public void levantarConexion(int puerto) {
 		try {
 			serverSocket = new ServerSocket(puerto);
@@ -25,6 +24,7 @@ public class Servidor {
 			System.exit(0);
 		}
 	}
+
 //Prueba
 	public void flujos() {
 		try {
