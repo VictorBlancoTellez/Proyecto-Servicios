@@ -12,7 +12,6 @@ public class Servidor {
 	private DataOutputStream bufferDeSalida = null;
 	Scanner escaner = new Scanner(System.in);
 	final String COMANDO_TERMINACION = "salir()";
-	private Thread a,b;
 
 	public void levantarConexion(int puerto) {
 		try {
@@ -27,7 +26,7 @@ public class Servidor {
 	}
 
 //Prueba
-	public void flujos(Socket socket) {
+	public void flujos() {
 		try {
 			bufferDeEntrada = new DataInputStream(socket.getInputStream());
 			bufferDeSalida = new DataOutputStream(socket.getOutputStream());
@@ -42,8 +41,8 @@ public class Servidor {
 		try {
 			do {
 				st = (String) bufferDeEntrada.readUTF();
-				if(st.equals("cambio 1")) {
-					flujos();
+				if(st.equals("cambio()")) {
+					System.out.println("me cambio");
 				}
 				mostrarTexto("\n[Cliente] => " + st);
 				System.out.print("\n[Usted] => ");
@@ -131,7 +130,7 @@ public class Servidor {
 				try {
 					System.out.println("me he metido dento del hilo");
 					levantarConexion(puerto);
-					flujos(socket);
+					flujos();
 					recibirDatos();
 				} finally {
 					cerrarConexion();
@@ -150,9 +149,9 @@ public class Servidor {
 		serverSocket = new ServerSocket(Integer.parseInt(puerto));
 		while (true) {
 			System.out.println("Estoy dentro de la funcions");
-			a = new Thread(new Server(Integer.parseInt(puerto),socket));
+			Thread a = new Thread(new Server(Integer.parseInt(puerto),socket));
 			a.start();
-			b = new Thread(new Server(Integer.parseInt(puerto),socket));
+			Thread b = new Thread(new Server(Integer.parseInt(puerto),socket));
 			b.start();
 			//s.ejecutarConexion(Integer.parseInt(puerto));
 			this.escribirDatos();
