@@ -12,7 +12,7 @@ public class Servidor {
 	private DataOutputStream bufferDeSalida = null;
 	Scanner escaner = new Scanner(System.in);
 	final String COMANDO_TERMINACION = "salir()";
-
+//comentario que no hace nada
 	public void levantarConexion(int puerto) {
 		try {
 			serverSocket = new ServerSocket(puerto);
