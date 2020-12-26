@@ -12,6 +12,7 @@ public class Servidor {
 	private DataOutputStream bufferDeSalida = null;
 	Scanner escaner = new Scanner(System.in);
 	final String COMANDO_TERMINACION = "salir()";
+	private Thread a,b;
 
 	public void levantarConexion(int puerto) {
 		try {
@@ -26,7 +27,7 @@ public class Servidor {
 	}
 
 //Prueba
-	public void flujos() {
+	public void flujos(Socket socket) {
 		try {
 			bufferDeEntrada = new DataInputStream(socket.getInputStream());
 			bufferDeSalida = new DataOutputStream(socket.getOutputStream());
@@ -41,6 +42,9 @@ public class Servidor {
 		try {
 			do {
 				st = (String) bufferDeEntrada.readUTF();
+				if(st.equals("cambio 1")) {
+					flujos();
+				}
 				mostrarTexto("\n[Cliente] => " + st);
 				System.out.print("\n[Usted] => ");
 			} while (!st.equals(COMANDO_TERMINACION));
@@ -84,11 +88,14 @@ public class Servidor {
 	}
 	
 	public class Server implements Runnable{
+		
+		private Socket socket;
 
 		private int puerto;
 		
-		public Server(int puerto) {
+		public Server(int puerto, Socket socket) {
 			setPuerto(puerto);
+			setSocket(socket);
 		}
 		
 		
@@ -105,6 +112,18 @@ public class Servidor {
 
 
 
+		public Socket getSocket() {
+			return socket;
+		}
+
+
+
+		public void setSocket(Socket socket) {
+			this.socket = socket;
+		}
+
+
+
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
@@ -112,7 +131,7 @@ public class Servidor {
 				try {
 					System.out.println("me he metido dento del hilo");
 					levantarConexion(puerto);
-					flujos();
+					flujos(socket);
 					recibirDatos();
 				} finally {
 					cerrarConexion();
@@ -131,9 +150,9 @@ public class Servidor {
 		serverSocket = new ServerSocket(Integer.parseInt(puerto));
 		while (true) {
 			System.out.println("Estoy dentro de la funcions");
-			Thread a = new Thread(new Server(Integer.parseInt(puerto)));
+			a = new Thread(new Server(Integer.parseInt(puerto),socket));
 			a.start();
-			Thread b = new Thread(new Server(Integer.parseInt(puerto)));
+			b = new Thread(new Server(Integer.parseInt(puerto),socket));
 			b.start();
 			//s.ejecutarConexion(Integer.parseInt(puerto));
 			this.escribirDatos();
