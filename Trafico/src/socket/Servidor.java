@@ -100,6 +100,8 @@ public class Servidor {
 		hilo.start();
 	}
 
+
+
 	public static void main(String[] args) throws IOException {
 		Servidor s = new Servidor();
 		Scanner sc = new Scanner(System.in);
@@ -108,7 +110,10 @@ public class Servidor {
 		String puerto = sc.nextLine();
 		if (puerto.length() <= 0)
 			puerto = "5050";
-		s.ejecutarConexion(Integer.parseInt(puerto));
-		s.escribirDatos();
+		while (true) {
+			s.ejecutarConexion(Integer.parseInt(puerto));
+			s.escribirDatos();
+		}
+
 	}
 }
