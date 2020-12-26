@@ -1,12 +1,12 @@
 package model;
 
-public class Radar {
+public class Sensor {
 
 	private int id;
 	private boolean bLLuvia;
 	private boolean bTrafico;
 	
-	public Radar(int id, boolean bLLuvia, boolean bTrafico) {
+	public Sensor(int id, boolean bLLuvia, boolean bTrafico) {
 		setId(id);
 		setbLLuvia(bLLuvia);
 		setbTrafico(bTrafico);
