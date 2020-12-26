@@ -82,37 +82,81 @@ public class Servidor {
 
 		}
 	}
+	
+	public class Server implements Runnable{
 
-	public void ejecutarConexion(int puerto) {
-		Thread hilo = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						levantarConexion(puerto);
-						flujos();
-						recibirDatos();
-					} finally {
-						cerrarConexion();
-					}
+		private int puerto;
+		
+		public Server(int puerto) {
+			setPuerto(puerto);
+		}
+		
+		
+		
+		public int getPuerto() {
+			return puerto;
+		}
+
+
+
+		public void setPuerto(int puerto) {
+			this.puerto = puerto;
+		}
+
+
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while (true) {
+				try {
+					System.out.println("me he metido dento del hilo");
+					levantarConexion(puerto);
+					flujos();
+					recibirDatos();
+				} finally {
+					cerrarConexion();
 				}
 			}
-		});
-		hilo.start();
+		}
+		
 	}
-
-	public static void main(String[] args) throws IOException {
-		Servidor s = new Servidor();
+	
+	private void a() {
 		Scanner sc = new Scanner(System.in);
-
 		mostrarTexto("Ingresa el puerto [5050 por defecto]: ");
 		String puerto = sc.nextLine();
 		if (puerto.length() <= 0)
 			puerto = "5050";
 		while (true) {
-			s.ejecutarConexion(Integer.parseInt(puerto));
-			s.escribirDatos();
+			Thread a = new Thread(new Server(Integer.parseInt(puerto)));
+			a.start();
+			//s.ejecutarConexion(Integer.parseInt(puerto));
+			this.escribirDatos();
 		}
+	}
+
+//	public void ejecutarConexion(int puerto) {
+//		Thread hilo = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				while (true) {
+//					try {
+//						levantarConexion(puerto);
+//						flujos();
+//						recibirDatos();
+//					} finally {
+//						cerrarConexion();
+//					}
+//				}
+//			}
+//		});
+//		hilo.start();
+//	}
+
+	public static void main(String[] args) throws IOException {
+		Servidor s = new Servidor();
+		s.a();
 
 	}
 }
