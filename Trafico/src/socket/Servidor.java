@@ -2,6 +2,8 @@ package socket;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Servidor {
@@ -15,6 +17,7 @@ public class Servidor {
 
 	public void levantarConexion(int puerto) {
 		try {
+			
 			mostrarTexto("Esperando conexión entrante en el puerto " + String.valueOf(puerto) + "...");
 			System.out.println("estoy antes del accept");
 			socket = serverSocket.accept();
@@ -41,7 +44,7 @@ public class Servidor {
 		try {
 			do {
 				st = (String) bufferDeEntrada.readUTF();
-				if(st.equals("cambio()")) {
+				if (st.equals("cambio()")) {
 					System.out.println("me cambio");
 				}
 				mostrarTexto("\n[Cliente] => " + st);
@@ -85,47 +88,37 @@ public class Servidor {
 
 		}
 	}
-	
-	public class Server implements Runnable{
-		
+
+	public class Server implements Runnable {
+
 		private Socket socket;
 
 		private int puerto;
-		
+
 		public Server(int puerto, Socket socket) {
 			setPuerto(puerto);
 			setSocket(socket);
 		}
-		
-		
-		
+
 		public int getPuerto() {
 			return puerto;
 		}
-
-
 
 		public void setPuerto(int puerto) {
 			this.puerto = puerto;
 		}
 
-
-
 		public Socket getSocket() {
 			return socket;
 		}
-
-
 
 		public void setSocket(Socket socket) {
 			this.socket = socket;
 		}
 
-
-
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+
 			while (true) {
 				try {
 					System.out.println("me he metido dento del hilo");
@@ -137,10 +130,12 @@ public class Servidor {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private void a() throws NumberFormatException, IOException {
+		List<Thread> listPantalla = new ArrayList<Thread>();
+		int iContador = 0;
 		Scanner sc = new Scanner(System.in);
 		mostrarTexto("Ingresa el puerto [5050 por defecto]: ");
 		String puerto = sc.nextLine();
@@ -149,12 +144,16 @@ public class Servidor {
 		serverSocket = new ServerSocket(Integer.parseInt(puerto));
 		while (true) {
 			System.out.println("Estoy dentro de la funcions");
-			Thread a = new Thread(new Server(Integer.parseInt(puerto),socket));
-			a.start();
-			Thread b = new Thread(new Server(Integer.parseInt(puerto),socket));
-			b.start();
-			//s.ejecutarConexion(Integer.parseInt(puerto));
+			listPantalla.add(new Thread(new Server(Integer.parseInt(puerto), socket)));
+			listPantalla.get(iContador).start();
+			iContador++;
+			// a.start();
+
+//			Thread b = new Thread(new Server(Integer.parseInt(puerto), socket));
+//			b.start();
+			// s.ejecutarConexion(Integer.parseInt(puerto));
 			this.escribirDatos();
+
 		}
 	}
 

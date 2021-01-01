@@ -3,9 +3,12 @@ package view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.ConexionDB;
 import socket.Cliente;
 import socket.Servidor;
 
@@ -13,8 +16,11 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 
+		ConexionDB cDb = new ConexionDB("Trafico");
+
 		boolean bServidor;
 		byte bOpcion;
+
 		BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Pulse 1 para cliente, 2 para servidor");
 		bOpcion = Byte.parseByte(leer.readLine());
@@ -24,7 +30,7 @@ public class Main {
 			bServidor = true;
 		}
 
-		// Si te logeas como servidore haces esto 	
+		// Si te logeas como servidore haces esto
 		List<String> jvmArgs = new ArrayList<>();
 		List<String> argsM = new ArrayList<>();
 		if (bServidor) {
