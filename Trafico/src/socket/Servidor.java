@@ -23,15 +23,19 @@ public class Servidor {
 			ObjectInputStream objInput = new ObjectInputStream(sc.getInputStream());
 			enviar = (EnviarDato) objInput.readObject();
 			
+			try {
+				Socket scReEnviar = new Socket(enviar.getsIp(), 1234);
+				ObjectOutputStream objOutput = new ObjectOutputStream(scReEnviar.getOutputStream());
+				System.out.println(enviar);
+				objOutput.writeObject(enviar);
+				objOutput.close();
+				scReEnviar.close();
+				sc.close();
+			}catch(Exception e) {
+				System.err.println("No se ha podido establecer la conexión con la pantalla indicada "+enviar.getsIp());
+				sc.close();
+			}
 			
-			Socket scReEnviar = new Socket(enviar.getsIp(), 1234);
-			ObjectOutputStream objOutput = new ObjectOutputStream(scReEnviar.getOutputStream());
-			System.out.println(enviar);
-			objOutput.writeObject(enviar);
-			objOutput.close();
-			scReEnviar.close();
-			sc.close();
-
 		}
 
 	}
