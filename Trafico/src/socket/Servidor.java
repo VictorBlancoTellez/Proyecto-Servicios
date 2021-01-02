@@ -22,9 +22,11 @@ public class Servidor {
 			Socket sc = servidor.accept();
 			ObjectInputStream objInput = new ObjectInputStream(sc.getInputStream());
 			enviar = (EnviarDato) objInput.readObject();
+			
+			
 			Socket scReEnviar = new Socket(enviar.getsIp(), 1234);
-			ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
-				
+			ObjectOutputStream objOutput = new ObjectOutputStream(scReEnviar.getOutputStream());
+			System.out.println(enviar);
 			objOutput.writeObject(enviar);
 			objOutput.close();
 			scReEnviar.close();

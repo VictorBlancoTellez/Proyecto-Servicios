@@ -28,18 +28,12 @@ public class Cliente {
 	}
 
 	public static void recibirObject() throws IOException, ClassNotFoundException {
-		ObjectInputStream objInput = null;
 		ServerSocket server = new ServerSocket(1234);
 		Socket sc;
 		EnviarDato recibir;
 		while (true) {
 			sc = server.accept();
-			try {
-				objInput = new ObjectInputStream(sc.getInputStream());
-			} catch (EOFException e) {
-				e.getMessage();
-			}
-
+			ObjectInputStream objInput = new ObjectInputStream(sc.getInputStream());
 			recibir = (EnviarDato) objInput.readObject();
 			System.out.println(recibir.getsDato());
 		}
