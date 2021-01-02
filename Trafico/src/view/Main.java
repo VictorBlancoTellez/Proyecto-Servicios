@@ -28,7 +28,11 @@ public class Main {
 			String sIp = leer.readLine();
 			System.out.println("Introduzca la IP del servidor");
 			String sIpServer = leer.readLine();
-			Cliente.startClient(sIpServer, idSensor, sIp, iDato);
+			do {
+				Cliente.startClient(sIpServer, idSensor, sIp, iDato);
+				System.out.println("Introduce el nuevo dato del sensor");
+				iDato = Integer.parseInt(leer.readLine());
+			} while (true);
 
 		} else {
 			Cliente.recibirObject();
