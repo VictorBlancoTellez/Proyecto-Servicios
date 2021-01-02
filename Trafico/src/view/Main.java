@@ -37,37 +37,5 @@ public class Main {
 		} else {
 			Cliente.recibirObject();
 		}
-
-//		Cliente.startClient("127.0.0.1", "ads", "127.0.0.1", 1);
-//
-//		boolean bServidor;
-//		byte bOpcion;
-//		String sUsuario = "";
-//
-//		System.out.println("Introduzca su id de pantalla o sensor");
-//		sUsuario = leer.readLine();
-//		if (QuerysController.existePantalla(sUsuario)) {
-//			UsuariosEsperando.listaPantallasEsperando.add(sUsuario);
-//
-//		} else if (QuerysController.existeSensor(sUsuario)) {
-//			if (UsuariosEsperando.listaPantallasEsperando.size() > 0) {
-//				System.out.println("Introduzca el ID de la pantalla a la que quiere conectarse");
-//				String sPantallaConexion = leer.readLine();
-//				if (QuerysController.existePantalla(sPantallaConexion)) {
-//
-//					System.out.println("Tu te has conectado a la pantalla: " + sPantallaConexion);
-//
-//				} else {
-//					System.out.println("No existe una pantalla con ese ID");
-//				}
-//			} else {
-//				System.out.println("No hay ninguna pantalla esperando conexion");
-//			}
-//
-//		} else {
-//			System.out.println("Elija un usuario que exista");
-//		}
-//
-//	}
 	}
 }
