@@ -81,7 +81,7 @@ public class QuerysController {
 
 	public static List<Integer> listarDatos() {
 		List<Integer> listaDatos = new ArrayList<Integer>();
-		String sql = "Select ID FROM monsajes";
+		String sql = "select * from trafico.mensajes;";
 		Statement stm = null;
 
 		try {
@@ -89,6 +89,7 @@ public class QuerysController {
 			ResultSet rs = stm.executeQuery(sql);
 			while (rs.next()) {
 				int id = rs.getInt(1);
+				System.out.println(id);
 				listaDatos.add(id);
 			}
 			stm.close();
