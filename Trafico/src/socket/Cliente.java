@@ -20,11 +20,7 @@ public class Cliente {
 		EnviarDato enviar = new EnviarDato();
 		enviar.setIdSensor(sSensor);
 		enviar.setsIp(sIp);
-		if (iDato == 1) {
-			enviar.setsDato("Esta lloviendo");
-		} else {
-			enviar.setsDato("Hay atasco");
-		}
+		enviar.setsDato(QuerysController.mensajeDato(iDato));
 //		enviar.setsDato(QuerysController.mensajeDato(iDato));
 
 		ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
