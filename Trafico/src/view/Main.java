@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.management.QueryExp;
+
 import controller.ConexionDB;
+import controller.QuerysController;
 import socket.Cliente;
 import socket.Servidor;
 
@@ -20,14 +23,35 @@ public class Main {
 			Servidor.startServer();
 			System.out.println("Servidor iniciado");
 		} else if (iOpcion == 2) {
-			System.out.println("Introduce el id del sensor");
-			String idSensor = leer.readLine();
-			System.out.println("Introduce el dato del sensor");
-			int iDato = Integer.parseInt(leer.readLine());
+			String idSensor, sIp, sIpServer;
+			int iDato;
+			boolean bExiste = false;
+			do {
+				bExiste = true;
+				System.out.println("Introduce el id del sensor");
+				idSensor = leer.readLine();
+				if (!QuerysController.existeSensor(idSensor)) {
+					bExiste = false;
+					System.out.println("El sensor indicado no existe en la base de datos\nLa lista de sensores es:\n"
+							+ QuerysController.mostrarLista(QuerysController.listaSensores()));
+
+				}
+			} while (!bExiste);
+			do {
+				bExiste = true;
+				System.out.println("Introduce el dato del sensor");
+				iDato = Integer.parseInt(leer.readLine());
+				if (!QuerysController.existeDato(iDato)) {
+					bExiste = false;
+					System.out.println("El dato indicado no existe en la base de datos\nLa lista de datos es:\n"
+							+ QuerysController.mostrarListaInt(QuerysController.listarDatos()));
+				}
+			} while (!bExiste);
+
 			System.out.println("Introduzca la IP de la pantalla");
-			String sIp = leer.readLine();
+			sIp = leer.readLine();
 			System.out.println("Introduzca la IP del servidor");
-			String sIpServer = leer.readLine();
+			sIpServer = leer.readLine();
 			do {
 				Cliente.startClient(sIpServer, idSensor, sIp, iDato);
 				System.out.println("Introduce el nuevo dato del sensor");

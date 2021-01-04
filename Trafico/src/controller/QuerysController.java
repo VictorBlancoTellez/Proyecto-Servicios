@@ -59,6 +59,45 @@ public class QuerysController {
 		return lSensores;
 	}
 
+	public static String mostrarLista(List<String> lista) {
+		String sResultado = "";
+
+		for (int i = 0; i < lista.size(); i++) {
+			sResultado += lista.get(0) + "\n";
+		}
+
+		return sResultado;
+	}
+
+	public static String mostrarListaInt(List<Integer> lista) {
+		String sResultado = "";
+
+		for (int i = 0; i < lista.size(); i++) {
+			sResultado += lista.get(0) + "\n";
+		}
+
+		return sResultado;
+	}
+
+	public static List<Integer> listarDatos() {
+		List<Integer> listaDatos = new ArrayList<Integer>();
+		String sql = "Select ID FROM monsajes";
+		Statement stm = null;
+
+		try {
+			stm = ConexionDB.getConnection().createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				int id = rs.getInt(1);
+				listaDatos.add(id);
+			}
+			stm.close();
+		} catch (Exception e) {
+
+		}
+		return listaDatos;
+	}
+
 	public static List<String> listaPantallas() {
 
 		List<String> lPantalla = new ArrayList<String>();
@@ -83,7 +122,7 @@ public class QuerysController {
 	public static boolean existeDato(int iDato) {
 		boolean bExiste = false;
 		int iContador = 0;
-		List<Integer> listaDatos = listaDatos();
+		List<Integer> listaDatos = listarDatos();
 
 		while (!bExiste && iContador < listaDatos.size()) {
 			if (iDato == (listaDatos.get(iContador))) {
@@ -93,29 +132,6 @@ public class QuerysController {
 		}
 
 		return bExiste;
-	}
-
-	@SuppressWarnings("null")
-	private static List<Integer> listaDatos() {
-		List<Integer> listaDatos = new ArrayList<Integer>();
-
-		String sql = "select * from trafico.mensajes;";
-		Statement stm = null;
-
-		try {
-			stm = ConexionDB.getConnection().createStatement();
-			ResultSet rs = stm.executeQuery(sql);
-			while (rs.next()) {
-				int sID = rs.getInt(1);
-
-				listaDatos.add(sID);
-			}
-			stm.close();
-		} catch (SQLException e) {
-
-		}
-		return listaDatos;
-
 	}
 
 	public static String mensajeDato(int iDato) {
