@@ -26,7 +26,6 @@ public class ConexionDB {
 
 		// Establecemos la conexion
 		try {
-
 			connectionDb = DriverManager.getConnection(url, user, password);
 		} catch (Exception sqle) {
 			connectionDb = null;
