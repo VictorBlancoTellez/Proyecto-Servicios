@@ -1,6 +1,5 @@
 package socket;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,7 +20,6 @@ public class Cliente {
 		enviar.setIdSensor(sSensor);
 		enviar.setsIp(sIp);
 		enviar.setsDato(QuerysController.mensajeDato(iDato));
-//		enviar.setsDato(QuerysController.mensajeDato(iDato));
 
 		ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
 		objOutput.writeObject(enviar);
