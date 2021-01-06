@@ -24,9 +24,9 @@ public class Servidor {
 			enviar = (EnviarDato) objInput.readObject();
 
 			try {
+				System.out.println(enviar);
 				Socket scReEnviar = new Socket(enviar.getsIp(), 1234);
 				ObjectOutputStream objOutput = new ObjectOutputStream(scReEnviar.getOutputStream());
-				System.out.println(enviar);
 				objOutput.writeObject(enviar);
 				objOutput.close();
 				scReEnviar.close();
