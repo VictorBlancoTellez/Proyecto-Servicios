@@ -15,14 +15,20 @@ public class Cliente {
 	public static void startClient(String sIpServidor, String sSensor, int iDato)
 			throws UnknownHostException, IOException {
 
-		Socket sc = new Socket(sIpServidor, Servidor.PUERTOPANTALLA);
-		EnviarDato enviar = new EnviarDato();
-		enviar.setIdSensor(sSensor);
-		enviar.setsDato(QuerysController.mensajeDato(iDato));
+		if (!QuerysController.existeDato(iDato)) {
+			System.out.println("El dato indicado no existe en la base de datos\nLa lista de datos es:\n"
+					+ QuerysController.mostrarListaInt(QuerysController.listarDatos()));
+		}else {
+			Socket sc = new Socket(sIpServidor, Servidor.PUERTOPANTALLA);
+			EnviarDato enviar = new EnviarDato();
+			enviar.setIdSensor(sSensor);
+			enviar.setsDato(QuerysController.mensajeDato(iDato));
 
-		ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
-		objOutput.writeObject(enviar);
-		sc.close();
+			ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
+			objOutput.writeObject(enviar);
+			sc.close();
+		}
+		
 	}
 
 	public static void recibirObject() throws IOException, ClassNotFoundException {

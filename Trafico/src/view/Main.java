@@ -24,14 +24,9 @@ public class Main {
 		} else if (iOpcion == 2) {
 			int iDato;
 			do {
-				System.out.println("Introduce el nuevo dato del sensor");
+				System.out.println("Introduce el dato del sensor");
 				iDato = Integer.parseInt(leer.readLine());
-				if (!QuerysController.existeDato(iDato)) {
-					System.out.println("El dato indicado no existe en la base de datos\nLa lista de datos es:\n"
-							+ QuerysController.mostrarListaInt(QuerysController.listarDatos()));
-				} else {
-					Cliente.startClient(IPSERVER, IDSENSOR, iDato);
-				}
+				Cliente.startClient(IPSERVER, IDSENSOR, iDato);
 			} while (true);
 
 		} else {
