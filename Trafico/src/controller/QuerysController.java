@@ -160,4 +160,22 @@ public class QuerysController {
 		return sMensaje;
 	}
 
+	public static String getIpByNombre(String idSensor) {
+		String ip = "";
+		String sql = "SELECT Ip FROM sensor WHERE ID = " + idSensor;
+		Statement stm = null;
+		try {
+			stm = ConexionDB.getConnection().createStatement();
+			ResultSet rs = stm.executeQuery(sql);
+			while (rs.next()) {
+				ip = rs.getString(1);
+			}
+			stm.close();
+		} catch (Exception e) {
+			System.out.println("Algo va mal");
+		}
+
+		return ip;
+	}
+
 }

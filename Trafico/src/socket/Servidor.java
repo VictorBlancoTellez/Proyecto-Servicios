@@ -6,14 +6,16 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import controller.QuerysController;
 import model.EnviarDato;
 
 public class Servidor {
-	final static int PUERTO = 1111;
+	final static int PUERTOSERVER = 1111;
+	final static int PUERTOPANTALLA = 1234;
 
 	public static void startServer() throws IOException, ClassNotFoundException {
 
-		ServerSocket servidor = new ServerSocket(PUERTO);
+		ServerSocket servidor = new ServerSocket(PUERTOSERVER);
 
 		EnviarDato enviar;
 
@@ -24,16 +26,17 @@ public class Servidor {
 			enviar = (EnviarDato) objInput.readObject();
 
 			try {
+				String ipSensor = QuerysController.getIpByNombre(enviar.getIdSensor());
 				System.out.println(enviar);
-				Socket scReEnviar = new Socket(enviar.getsIp(), 1234);
+				Socket scReEnviar = new Socket(QuerysController.getIpByNombre(enviar.getIdSensor()), PUERTOPANTALLA);
 				ObjectOutputStream objOutput = new ObjectOutputStream(scReEnviar.getOutputStream());
 				objOutput.writeObject(enviar);
 				objOutput.close();
 				scReEnviar.close();
 				sc.close();
 			} catch (Exception e) {
-				System.err
-						.println("No se ha podido establecer la conexión con la pantalla indicada " + enviar.getsIp());
+				System.err.println("No se ha podido establecer la conexión con la pantalla indicada "
+						+ QuerysController.getIpByNombre(enviar.getIdSensor()));
 				sc.close();
 			}
 

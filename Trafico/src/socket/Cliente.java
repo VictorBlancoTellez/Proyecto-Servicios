@@ -12,13 +12,12 @@ import model.EnviarDato;
 
 public class Cliente {
 
-	public static void startClient(String sIpServidor, String sSensor, String sIp, int iDato)
+	public static void startClient(String sIpServidor, String sSensor, int iDato)
 			throws UnknownHostException, IOException {
 
-		Socket sc = new Socket(sIpServidor, Servidor.PUERTO);
+		Socket sc = new Socket(sIpServidor, Servidor.PUERTOPANTALLA);
 		EnviarDato enviar = new EnviarDato();
 		enviar.setIdSensor(sSensor);
-		enviar.setsIp(sIp);
 		enviar.setsDato(QuerysController.mensajeDato(iDato));
 
 		ObjectOutputStream objOutput = new ObjectOutputStream(sc.getOutputStream());
@@ -27,7 +26,7 @@ public class Cliente {
 	}
 
 	public static void recibirObject() throws IOException, ClassNotFoundException {
-		ServerSocket server = new ServerSocket(1234);
+		ServerSocket server = new ServerSocket(Servidor.PUERTOPANTALLA);
 		Socket sc;
 		EnviarDato recibir;
 		while (true) {

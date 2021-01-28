@@ -10,7 +10,6 @@ public class EnviarDato implements Serializable {
 	private static final long serialVersionUID = 1L;
 	String idSensor;
 	String sDato;
-	String sIp;
 
 	public String getIdSensor() {
 		return idSensor;
@@ -18,14 +17,6 @@ public class EnviarDato implements Serializable {
 
 	public void setIdSensor(String idSensor) {
 		this.idSensor = idSensor;
-	}
-
-	public String getsIp() {
-		return sIp;
-	}
-
-	public void setsIp(String sIp) {
-		this.sIp = sIp;
 	}
 
 	public String getsDato() {
@@ -38,7 +29,7 @@ public class EnviarDato implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EnviarDato [idSensor=" + idSensor + ", sDato=" + sDato + ", sIp=" + sIp + "]";
+		return "EnviarDato [idSensor=" + idSensor + ", sDato=" + sDato + "]";
 	}
 
 }
